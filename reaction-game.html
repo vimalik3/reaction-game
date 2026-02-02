@@ -14,13 +14,14 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: white;
             padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         h1 {
@@ -32,7 +33,122 @@
         .subtitle {
             font-size: 1.1rem;
             color: #aaa;
-            margin-bottom: 30px;
+        }
+
+        .main-layout {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: flex-start;
+        }
+
+        /* LEFT PANEL - Players */
+        .panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            width: 250px;
+            flex-shrink: 0;
+        }
+
+        .panel h2 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
+
+        .add-player {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .add-player input {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 2px solid #333;
+            background: #0f0f23;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .add-player input:focus {
+            border-color: #3498db;
+        }
+
+        .add-player button {
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: none;
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .add-player button:hover {
+            background: #2980b9;
+        }
+
+        .player-list {
+            list-style: none;
+        }
+
+        .player-list li {
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: background 0.2s;
+        }
+
+        .player-list li:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .player-list li.active {
+            background: rgba(52, 152, 219, 0.3);
+            border: 1px solid #3498db;
+        }
+
+        .player-list li .remove-btn {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0 4px;
+            opacity: 0.6;
+        }
+
+        .player-list li .remove-btn:hover {
+            opacity: 1;
+        }
+
+        /* CENTER - Game */
+        .center-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .current-player-banner {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: #aaa;
+        }
+
+        .current-player-banner strong {
+            color: #f1c40f;
         }
 
         .game-area {
@@ -49,6 +165,11 @@
             border: 3px solid #333;
             position: relative;
             overflow: hidden;
+        }
+
+        .game-area.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .game-area.waiting {
@@ -88,7 +209,7 @@
         }
 
         .stats {
-            margin-top: 30px;
+            margin-top: 20px;
             display: flex;
             gap: 40px;
             text-align: center;
@@ -96,7 +217,7 @@
 
         .stat-box {
             background: rgba(255, 255, 255, 0.1);
-            padding: 20px 30px;
+            padding: 15px 25px;
             border-radius: 15px;
             backdrop-filter: blur(10px);
         }
@@ -118,7 +239,7 @@
         }
 
         .instructions {
-            margin-top: 30px;
+            margin-top: 20px;
             padding: 20px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 15px;
@@ -141,6 +262,58 @@
             margin-bottom: 10px;
         }
 
+        /* RIGHT PANEL - Scorecard */
+        .scorecard h2 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #f1c40f;
+        }
+
+        .scorecard-list {
+            list-style: none;
+        }
+
+        .scorecard-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            margin-bottom: 6px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .scorecard-list li .rank {
+            color: #aaa;
+            margin-right: 10px;
+            font-size: 0.85rem;
+            min-width: 20px;
+        }
+
+        .scorecard-list li .player-name {
+            flex: 1;
+        }
+
+        .scorecard-list li .player-time {
+            font-weight: bold;
+            color: #2ecc71;
+        }
+
+        .scorecard-list li .no-score {
+            color: #666;
+            font-style: italic;
+        }
+
+        .scorecard-list li:first-child .player-time {
+            color: #f1c40f;
+        }
+
+        .scorecard-empty {
+            color: #666;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
         /* Fun confetti for good scores */
         .confetti {
             position: absolute;
@@ -159,68 +332,239 @@
     </style>
 </head>
 <body>
-    <h1>⚡ Reaction Time Game By Vihaan Malik!</h1>
-    <p class="subtitle">How fast can you click. Ready!!!?</p>
+    <header>
+        <h1>⚡ Reaction Time Game By Vihaan Malik!</h1>
+        <p class="subtitle">How fast can you click. Ready!!!?</p>
+    </header>
 
-    <div class="game-area" id="gameArea">
-        <div class="message" id="message">
-            <div class="emoji">👆</div>
-            Click to Start!
+    <div class="main-layout">
+        <!-- LEFT PANEL: Players -->
+        <div class="panel">
+            <h2>👥 Players</h2>
+            <div class="add-player">
+                <input type="text" id="playerNameInput" placeholder="Enter name..." maxlength="15">
+                <button id="addPlayerBtn">+</button>
+            </div>
+            <ul class="player-list" id="playerList"></ul>
         </div>
-    </div>
 
-    <div class="stats">
-        <div class="stat-box">
-            <div class="stat-label">Attempts</div>
-            <div class="stat-value" id="attempts">0</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-label">Best Time</div>
-            <div class="stat-value best" id="bestTime">---</div>
-        </div>
-    </div>
+        <!-- CENTER: Game -->
+        <div class="center-column">
+            <div class="current-player-banner" id="currentPlayerBanner">
+                Select a player to start!
+            </div>
 
-    <div class="instructions">
-        <h3>🎮 How to Play</h3>
-        <p>
-            1. Click the box to start<br>
-            2. Wait for it to turn <strong style="color: #2ecc71;">GREEN</strong><br>
-            3. Click as FAST as you can!<br>
-            4. Don't click too early! 🙈
-        </p>
+            <div class="game-area disabled" id="gameArea">
+                <div class="message" id="message">
+                    <div class="emoji">👆</div>
+                    Select a player first!
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-label">Attempts</div>
+                    <div class="stat-value" id="attempts">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Best Time</div>
+                    <div class="stat-value best" id="bestTime">---</div>
+                </div>
+            </div>
+
+            <div class="instructions">
+                <h3>🎮 How to Play</h3>
+                <p>
+                    1. Add a player and select them<br>
+                    2. Click the box to start<br>
+                    3. Wait for it to turn <strong style="color: #2ecc71;">GREEN</strong><br>
+                    4. Click as FAST as you can!<br>
+                    5. Don't click too early! 🙈
+                </p>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL: Scorecard -->
+        <div class="panel scorecard">
+            <h2>🏆 Scorecard</h2>
+            <ul class="scorecard-list" id="scorecardList">
+                <li class="scorecard-empty">No scores yet</li>
+            </ul>
+        </div>
     </div>
 
     <script>
         // 🎮 GAME VARIABLES
-        // These store important information about the game
-        let gameState = 'idle';      // What's happening right now?
-        let startTime = 0;           // When did the green appear?
-        let timeoutId = null;        // Used to control the timer
-        let attempts = 0;            // How many times have you tried?
-        let bestTime = Infinity;     // Your fastest reaction (starts super high)
+        let gameState = 'idle';
+        let startTime = 0;
+        let timeoutId = null;
+        let attempts = 0;
+        let bestTime = Infinity;
+
+        // 👥 PLAYER VARIABLES
+        let players = [];          // { name, bestTime }
+        let activePlayerIndex = -1; // which player is selected
 
         // 🎯 GET THE ELEMENTS FROM THE PAGE
-        // This is how JavaScript finds things on the webpage
         const gameArea = document.getElementById('gameArea');
         const message = document.getElementById('message');
         const attemptsDisplay = document.getElementById('attempts');
         const bestTimeDisplay = document.getElementById('bestTime');
+        const playerNameInput = document.getElementById('playerNameInput');
+        const addPlayerBtn = document.getElementById('addPlayerBtn');
+        const playerList = document.getElementById('playerList');
+        const scorecardList = document.getElementById('scorecardList');
+        const currentPlayerBanner = document.getElementById('currentPlayerBanner');
+
+        // ➕ ADD A PLAYER
+        function addPlayer() {
+            const name = playerNameInput.value.trim();
+            if (!name) return;
+            if (players.some(p => p.name.toLowerCase() === name.toLowerCase())) return;
+
+            players.push({ name: name, bestTime: Infinity });
+            playerNameInput.value = '';
+            renderPlayers();
+            renderScorecard();
+
+            // Auto-select if it's the first player
+            if (players.length === 1) {
+                selectPlayer(0);
+            }
+        }
+
+        addPlayerBtn.addEventListener('click', addPlayer);
+        playerNameInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') addPlayer();
+        });
+
+        // 🗑️ REMOVE A PLAYER
+        function removePlayer(index) {
+            players.splice(index, 1);
+            if (activePlayerIndex === index) {
+                activePlayerIndex = -1;
+                resetGameForNoPlayer();
+            } else if (activePlayerIndex > index) {
+                activePlayerIndex--;
+            }
+            renderPlayers();
+            renderScorecard();
+        }
+
+        // 🔘 SELECT A PLAYER
+        function selectPlayer(index) {
+            activePlayerIndex = index;
+            const player = players[index];
+
+            // Reset game state for this player
+            gameState = 'idle';
+            clearTimeout(timeoutId);
+            attempts = 0;
+            bestTime = player.bestTime;
+
+            attemptsDisplay.textContent = '0';
+            bestTimeDisplay.textContent = bestTime === Infinity ? '---' : bestTime + 'ms';
+
+            gameArea.className = 'game-area';
+            message.innerHTML = '<div class="emoji">👆</div>Click to Start!';
+            currentPlayerBanner.innerHTML = 'Playing as: <strong>' + player.name + '</strong>';
+
+            renderPlayers();
+        }
+
+        function resetGameForNoPlayer() {
+            gameState = 'idle';
+            clearTimeout(timeoutId);
+            attempts = 0;
+            bestTime = Infinity;
+            attemptsDisplay.textContent = '0';
+            bestTimeDisplay.textContent = '---';
+            gameArea.className = 'game-area disabled';
+            message.innerHTML = '<div class="emoji">👆</div>Select a player first!';
+            currentPlayerBanner.textContent = 'Select a player to start!';
+        }
+
+        // 🎨 RENDER PLAYER LIST
+        function renderPlayers() {
+            playerList.innerHTML = '';
+            players.forEach(function(player, i) {
+                const li = document.createElement('li');
+                if (i === activePlayerIndex) li.className = 'active';
+                li.addEventListener('click', function() { selectPlayer(i); });
+
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = player.name;
+
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-btn';
+                removeBtn.textContent = '✕';
+                removeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    removePlayer(i);
+                });
+
+                li.appendChild(nameSpan);
+                li.appendChild(removeBtn);
+                playerList.appendChild(li);
+            });
+        }
+
+        // 🏆 RENDER SCORECARD
+        function renderScorecard() {
+            scorecardList.innerHTML = '';
+
+            // Sort players by best time (lowest first), unplayed at bottom
+            const sorted = players
+                .map(function(p, i) { return { name: p.name, bestTime: p.bestTime }; })
+                .sort(function(a, b) {
+                    if (a.bestTime === Infinity && b.bestTime === Infinity) return 0;
+                    if (a.bestTime === Infinity) return 1;
+                    if (b.bestTime === Infinity) return -1;
+                    return a.bestTime - b.bestTime;
+                });
+
+            if (sorted.length === 0) {
+                scorecardList.innerHTML = '<li class="scorecard-empty">No scores yet</li>';
+                return;
+            }
+
+            sorted.forEach(function(p, i) {
+                const li = document.createElement('li');
+
+                const rank = document.createElement('span');
+                rank.className = 'rank';
+                rank.textContent = (i + 1) + '.';
+
+                const name = document.createElement('span');
+                name.className = 'player-name';
+                name.textContent = p.name;
+
+                const time = document.createElement('span');
+                if (p.bestTime === Infinity) {
+                    time.className = 'no-score';
+                    time.textContent = '---';
+                } else {
+                    time.className = 'player-time';
+                    time.textContent = p.bestTime + 'ms';
+                }
+
+                li.appendChild(rank);
+                li.appendChild(name);
+                li.appendChild(time);
+                scorecardList.appendChild(li);
+            });
+        }
 
         // 🖱️ WHAT HAPPENS WHEN YOU CLICK
         gameArea.addEventListener('click', function() {
+            // Must have an active player
+            if (activePlayerIndex === -1) return;
 
-            // STATE 1: Game hasn't started yet - BEGIN!
             if (gameState === 'idle' || gameState === 'result') {
                 startGame();
-            }
-
-            // STATE 2: Waiting for green - TOO EARLY!
-            else if (gameState === 'waiting') {
+            } else if (gameState === 'waiting') {
                 tooEarly();
-            }
-
-            // STATE 3: It's green - MEASURE THE REACTION!
-            else if (gameState === 'ready') {
+            } else if (gameState === 'ready') {
                 measureReaction();
             }
         });
@@ -231,22 +575,19 @@
             gameArea.className = 'game-area waiting';
             message.innerHTML = '<div class="emoji">🔴</div>Wait for green...';
 
-            // Pick a random time between 1 and 4 seconds
-            // Math.random() gives us a random number!
             const randomDelay = 1000 + Math.random() * 3000;
 
-            // After the random time, turn green!
             timeoutId = setTimeout(function() {
                 gameState = 'ready';
                 gameArea.className = 'game-area ready';
                 message.innerHTML = '<div class="emoji">🟢</div>CLICK NOW!';
-                startTime = Date.now();  // Remember this exact moment!
+                startTime = Date.now();
             }, randomDelay);
         }
 
         // 😅 CLICKED TOO EARLY!
         function tooEarly() {
-            clearTimeout(timeoutId);  // Stop the timer
+            clearTimeout(timeoutId);
             gameState = 'idle';
             gameArea.className = 'game-area too-early';
             message.innerHTML = '<div class="emoji">🙈</div>Too early!<br>Click to try again';
@@ -255,7 +596,7 @@
         // ⚡ MEASURE HOW FAST THEY CLICKED
         function measureReaction() {
             const endTime = Date.now();
-            const reactionTime = endTime - startTime;  // Math magic!
+            const reactionTime = endTime - startTime;
 
             attempts++;
             attemptsDisplay.textContent = attempts;
@@ -264,13 +605,17 @@
             if (reactionTime < bestTime) {
                 bestTime = reactionTime;
                 bestTimeDisplay.textContent = bestTime + 'ms';
-                createConfetti();  // Celebrate! 🎉
+
+                // Save to player data
+                players[activePlayerIndex].bestTime = bestTime;
+                renderScorecard();
+
+                createConfetti();
             }
 
             gameState = 'result';
             gameArea.className = 'game-area';
 
-            // Show different messages based on how fast they were
             let emoji, comment;
             if (reactionTime < 200) {
                 emoji = '🚀';
@@ -310,7 +655,6 @@
                 confetti.style.animationDelay = Math.random() * 0.5 + 's';
                 gameArea.appendChild(confetti);
 
-                // Clean up confetti after animation
                 setTimeout(() => confetti.remove(), 1500);
             }
         }
